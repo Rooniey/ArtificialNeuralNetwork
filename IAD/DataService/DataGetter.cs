@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 
 namespace IAD.DataService
@@ -23,7 +24,7 @@ namespace IAD.DataService
                         rowD = new double[row.Length];
                         for(int i = 0; i < row.Length; i++)
                         {
-                            rowD[i] = Double.Parse(row[i]);
+                            rowD[i] = Double.Parse(row[i], CultureInfo.InvariantCulture);
                         }
                         data.Add(rowD);
                     }

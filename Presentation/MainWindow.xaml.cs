@@ -18,7 +18,7 @@ namespace Wpf.CartesianChart.ScatterPlot
             InitializeComponent();
 
             DataGetter dg = new DataGetter();
-            List<double[]> data = (List<double[]>)dg.GetData(@"C:\Users\Marek\Desktop\group_B.csv", ',');
+            List<double[]> data = (List<double[]>)dg.GetData("group_B.csv", ',');
 
             Values = new ChartValues<ObservablePoint>();
 
