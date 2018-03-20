@@ -22,7 +22,7 @@ namespace IAD.DataService
                     {
                         row = line.Split(delimeter);
                         rowD = new double[row.Length];
-                        for(int i = 0; i < row.Length; i++)
+                        for (int i = 0; i < row.Length; i++)
                         {
                             rowD[i] = Double.Parse(row[i], CultureInfo.InvariantCulture);
                         }
@@ -30,7 +30,7 @@ namespace IAD.DataService
                     }
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
@@ -38,6 +38,5 @@ namespace IAD.DataService
 
             return data;
         }
-
     }
 }

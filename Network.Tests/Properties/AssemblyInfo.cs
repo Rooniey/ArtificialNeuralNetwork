@@ -1,5 +1,4 @@
 using System.Reflection;
-using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Network.Tests")]
@@ -10,9 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-
 [assembly: ComVisible(false)]
-
 [assembly: Guid("5e8655ca-f65d-44df-a18b-3e41c6d2cbc5")]
 
 // [assembly: AssemblyVersion("1.0.*")]

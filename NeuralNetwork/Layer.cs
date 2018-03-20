@@ -1,9 +1,4 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeuralNetwork
 {
@@ -13,11 +8,13 @@ namespace NeuralNetwork
         private ILayerUtility _layerUtility;
 
         public Matrix<double> WeightMatrix { get; set; } // W
+        public Matrix<double> DeltaMatrix { get; set; } //D
+        public Matrix<double> WeightDeltaMatrix { get; set; } // deltaW
         public int NeuronCount { get; set; }
         public Matrix<double> LastOutputMatrix { get; set; } // Z
         public Matrix<double> LastDifferentialMatrix { get; set; } // F
         public IActivationFunction ActivationFunction { get => _activationFunction; set => _activationFunction = value; }
-        public ILayerUtility LayerUtility { get => _layerUtility; set => _layerUtility = value; }        
+        public ILayerUtility LayerUtility { get => _layerUtility; set => _layerUtility = value; }
 
         public Layer(IActivationFunction activationFunction, int neuronCount, ILayerUtility layerUtility)
         {
@@ -25,6 +22,5 @@ namespace NeuralNetwork
             NeuronCount = neuronCount;
             _layerUtility = layerUtility;
         }
-
     }
 }

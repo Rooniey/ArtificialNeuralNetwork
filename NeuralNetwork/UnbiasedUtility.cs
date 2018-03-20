@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 
 namespace NeuralNetwork
 {
@@ -16,9 +11,8 @@ namespace NeuralNetwork
             layer.LastDifferentialMatrix = Matrix<double>.Build.Dense(layer.NeuronCount, 1);
         }
 
-        public Matrix<double> Propagate(Layer layer, Matrix<double> X)
+        public Matrix<double> Propagate(Layer layer, Matrix<double> X, Layer nextLayer)
         {
-
             //calculate weighted sum
             var S = X.Multiply(layer.WeightMatrix);
 

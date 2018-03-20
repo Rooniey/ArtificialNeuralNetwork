@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using IAD.DataService;
+﻿using IAD.DataService;
 using LiveCharts;
 using LiveCharts.Defaults;
+using System.Collections.Generic;
+using System.Windows.Controls;
 
 namespace Wpf.CartesianChart.ScatterPlot
 {
@@ -15,7 +13,6 @@ namespace Wpf.CartesianChart.ScatterPlot
     {
         public ScatterExample()
         {
-            
             InitializeComponent();
 
             DataGetter dg = new DataGetter();
@@ -37,7 +34,6 @@ namespace Wpf.CartesianChart.ScatterPlot
 
         public ChartValues<ObservablePoint> Values { get; set; }
         public ChartValues<ObservablePoint> Values1 { get; set; }
-
     }
 
     internal class Perceptron
