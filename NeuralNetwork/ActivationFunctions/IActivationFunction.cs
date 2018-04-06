@@ -1,6 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 
-namespace NeuralNetwork
+namespace NeuralNetwork.ActivationFunctions
 {
     public interface IActivationFunction
     {

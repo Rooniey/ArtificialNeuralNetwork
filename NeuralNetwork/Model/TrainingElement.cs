@@ -1,6 +1,6 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 
-namespace NeuralNetwork
+namespace NeuralNetwork.Model
 {
     public struct TrainingElement
     {
@@ -9,14 +9,13 @@ namespace NeuralNetwork
 
         public TrainingElement(double[,] input, double[,] output)
         {
-            Input = Matrix<double>.Build.DenseOfArray(input); //, Matrix<double>.Build.DenseOfArray(new double[,] { { 0 } })));
+            Input = Matrix<double>.Build.DenseOfArray(input);
             DesiredOutput = Matrix<double>.Build.DenseOfArray(output);
         }
 
-        //maybe useful
         public void AddInput(double[,] input)
         {
-            Input = Matrix<double>.Build.DenseOfArray(input); //, Matrix<double>.Build.DenseOfArray(new double[,] { { 0 } })));
+            Input = Matrix<double>.Build.DenseOfArray(input); 
         }
 
         public void AddDesiredOutput(double[,] output)
