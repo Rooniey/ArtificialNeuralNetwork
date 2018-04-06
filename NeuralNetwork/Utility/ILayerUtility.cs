@@ -8,5 +8,10 @@ namespace NeuralNetwork.Utility
         void InitLayer(Layer layer, int prevousSize);
 
         Matrix<double> Propagate(Layer layer, Matrix<double> a);
+
+        void Backpropagate(Layer layer, Layer nextLayer);
+
+        void UpdateLayer(Layer layer, Matrix<double> a, double learningRate, double momentum);
+
     }
 }

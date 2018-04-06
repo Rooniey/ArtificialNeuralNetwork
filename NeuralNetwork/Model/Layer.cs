@@ -6,23 +6,37 @@ namespace NeuralNetwork.Model
 {
     public class Layer
     {
-        private IActivationFunction _activationFunction;
-        private ILayerUtility _layerUtility;
-
         public Matrix<double> WeightMatrix { get; set; } // W
-        public Matrix<double> DeltaMatrix { get; set; } //D
-        public Matrix<double> WeightDeltaMatrix { get; set; } // deltaW
-        public int NeuronCount { get; set; }
-        public Matrix<double> LastOutputMatrix { get; set; } // Z
-        public Matrix<double> LastDifferentialMatrix { get; set; } // F
-        public IActivationFunction ActivationFunction { get => _activationFunction; set => _activationFunction = value; }
-        public ILayerUtility LayerUtility { get => _layerUtility; set => _layerUtility = value; }
+        public Matrix<double> WeightedSum { get; set; } // Z
+        public Matrix<double> Activation { get; set; } // A
+        public Matrix<double> DeltaL { get; set; } //δL
+        public Matrix<double> WeightsDeltas { get; set; }
 
-        public Layer(IActivationFunction activationFunction, int neuronCount, ILayerUtility layerUtility)
+        public int NeuronCount { get; set; }
+
+        public ILayerUtility LayerUtility { get; }
+        public IActivationFunction ActivationFunction { get; }
+
+        public Layer(int neuronCount, IActivationFunction activationFunction, ILayerUtility layerUtility)
         {
-            _activationFunction = activationFunction;
+            ActivationFunction = activationFunction;
             NeuronCount = neuronCount;
-            _layerUtility = layerUtility;
+            LayerUtility = layerUtility;
+        }
+
+        public Matrix<double> Propagate(Matrix<double> a)
+        {
+            return LayerUtility.Propagate(this, a);
+        }
+
+        public void Backpropagate(Layer nextLayer)
+        {
+            LayerUtility.Backpropagate(this, nextLayer);
+        }
+
+        public void UpdateLayer(Matrix<double> prevA, double learningRate, double momentum)
+        {
+            LayerUtility.UpdateLayer(this, prevA, learningRate, momentum);
         }
     }
 }

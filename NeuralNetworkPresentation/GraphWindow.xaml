@@ -1,0 +1,26 @@
+﻿<Window x:Class="NeuralNetworkPresentation.GraphWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:oxy="http://oxyplot.org/wpf"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NeuralNetworkPresentation"
+        mc:Ignorable="d"
+        Title="GraphWindow" Height="300" Width="300">
+    <Grid>
+        <oxy:Plot Title="{Binding GraphName}">
+            <oxy:Plot.Series>
+                <oxy:LineSeries 
+                    MarkerStroke="Black"
+                    MarkerStrokeThickness="2.0" 
+                    MarkerFill="Transparent" 
+                    MarkerSize="6" 
+                    MarkerType="Circle" 
+                    ItemsSource="{Binding DataPoints}"/>
+            </oxy:Plot.Series>
+            <oxy:Plot.Axes>
+                <oxy:LinearAxis Title="{Binding NameY}" Position="Left" FontSize="15" FontWeight="ExtraBold"></oxy:LinearAxis>
+                <oxy:LinearAxis Title="{Binding NameX}" Position="Bottom" FontSize="15" FontWeight="ExtraBold"></oxy:LinearAxis>
+            </oxy:Plot.Axes>
+        </oxy:Plot>
+    </Grid>
+</Window>

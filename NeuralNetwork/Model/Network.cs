@@ -6,96 +6,79 @@ namespace NeuralNetwork.Model
 {
     public class Network
     {
-        public List<Layer> Layers { get; set; }
-        public int InputSize { get; set; }
+        public List<Layer> Layers { get; private set; }
+        public int InputSize { get; }
+        public List<double> Errors { get; set; }
 
         public Network(int inputSize)
         {
             Layers = new List<Layer>();
             InputSize = inputSize;
+            Errors = new List<double>();
         }
 
-//        public void Train(double learningRate, int epochs, List<TrainingElement> inputs)
-//        {
-//            for (int i = 0; i < epochs; i++)
-//            {
-//                for (int j = 0; j < inputs.Count; j++)
-//                {
-//                    Matrix<double> guess = GetOutput(inputs[j].Input);
-//
-//                    CalculateDMatrices(inputs, j, guess);
-//
-//                    CalculateWeightDeltas(learningRate, inputs, j);
-//
-//                    UpdateWeights();
-//                }
-//            }
-//        }
-//
-//        private void UpdateWeights()
-//        {
-//            foreach (var layer in Layers)
-//            {
-//                layer.WeightMatrix = layer.WeightMatrix.Add(layer.WeightDeltaMatrix);
-//            }
-//        }
-//
-//        private void CalculateDMatrices(List<TrainingElement> inputs, int j, Matrix<double> guess)
-//        {
-//            //D(last) = (Z(last) - Y)^T
-//
-//            // D(last) = (Z(last) - Y) ^ T
-//            var finalErrorMatrix = guess.Subtract(inputs[j].DesiredOutput).Transpose();
-//        
-//            //_layers.Last().DeltaMatrix = inputs[j].DesiredOutput.Subtract(guess).Transpose();
-//
-//            var weightMatrix = Layers.Last().WeightMatrix;
-//            var multiplyProduct = weightMatrix.Multiply(finalErrorMatrix);
-//
-//            Layers.Last().DeltaMatrix = Layers.Last().LastDifferentialMatrix.PointwiseMultiply(finalErrorMatrix);
-//
-//            //_layers.Last().DeltaMatrix = inputs[j].DesiredOutput.Subtract(guess).Transpose();
-//
-//            for (int k = Layers.Count - 2; k >= 0; k--)
-//            {
-//                // D(i) = F(i) * (W(i) x D(i+1))
-//                weightMatrix = Layers[k+1].WeightMatrix;
-//                multiplyProduct = weightMatrix.Multiply(Layers[k + 1].DeltaMatrix.Transpose()).Transpose();
-//
-//                Layers[k].DeltaMatrix = Layers[k].LastDifferentialMatrix.PointwiseMultiply(multiplyProduct);
-//            }
-//        }
-//
-//        private void CalculateWeightDeltas(double learningRate, List<TrainingElement> inputs, int j)
-//        {
-//            //deltaW = -rate * (D(i) x inputMatrix)^T
-//            var weightFactor = Layers[0].DeltaMatrix.Transpose().Multiply(inputs[j].Input).Transpose();
-//            Layers[0].WeightDeltaMatrix = weightFactor.Multiply(-1 * learningRate);
-//
-//            for (var k = 1; k < Layers.Count; k++)
-//            {
-//                var kupa = Layers[k].DeltaMatrix;
-//                var kupa2 = Layers[k - 1].LastOutputMatrix;
-//                weightFactor = Layers[k].DeltaMatrix.Transpose().Multiply(Layers[k-1].LastOutputMatrix).Transpose();
-//                Layers[k].WeightDeltaMatrix = weightFactor.Multiply(-1 * learningRate);
-//            }
-//        }
-//
-//        public Matrix<double> GetOutput(Matrix<double> input)
-//        {
-//            Matrix<double> Z = input;
-//            foreach (var item in Layers)
-//            {
-//                Z = item.LayerUtility.Propagate(item, Z, item);
-//            }
-//            return Z;
-//        }
-//
-//        public void AddLayer(Layer lay)
-//        {
-//            var previousSize = Layers.Count == 0 ? InputSize : Layers.Last().NeuronCount;
-//            Layers.Add(lay);
-//            lay.LayerUtility.InitLayer(lay, previousSize);
-//        }
+        public void AddLayer(Layer layer)
+        {
+            var previousSize = Layers.Count == 0 ? InputSize : Layers.Last().NeuronCount;
+            layer.LayerUtility.InitLayer(layer, previousSize);
+            Layers.Add(layer);         
+        }
+
+        public void Train(double learningRate, int epochs, double momentum, List<TrainingElement> inputs, double desiredError = 0)
+        {
+            for (var i = 0; i < epochs && desiredError > Errors[i]; i++)
+            {
+                List<double> epochsErrors = new List<double>();
+                for (var j = 0; j < inputs.Count; j++)
+                {
+                    var guess = ForwardPropagation(inputs[j].Input);
+
+                    epochsErrors.Add(MeanSquaredError(guess, inputs[j].Input));
+
+                    //an equation for the error in the output layer, δL
+                    var outputLayer = Layers.Last();
+                    var sigmoidDerivative =
+                        outputLayer.ActivationFunction.CalculateDifferential(outputLayer.WeightedSum);                  //∇aC=(aL−y)
+                    outputLayer.DeltaL = guess.Subtract(inputs[j].DesiredOutput).PointwiseMultiply(sigmoidDerivative);  //δL
+
+                    //an equation for the error δl in terms of the error in the next layer, δl + 1
+                    for (var k = Layers.Count - 2; k >= 0; k--)
+                    {
+                        Layers[k].Backpropagate(Layers[k+1]);
+                    }
+
+                    Layers.First().UpdateLayer(inputs[j].Input, learningRate, momentum);
+
+                    for (var k = 1; k < Layers.Count; k++)
+                    {
+                        Layers[k].UpdateLayer(Layers[k-1].Activation, learningRate, momentum);
+                    }
+                }
+                Errors.Add(epochsErrors.Sum() / inputs.Count);
+            }
+        }
+
+        public Matrix<double> ForwardPropagation(Matrix<double> input)
+        {
+            var a = input;
+            foreach (var layer in Layers)
+            {
+                a = layer.Propagate(a);
+            }
+            return a;
+        }
+
+        private double MeanSquaredError(Matrix<double> guesses, Matrix<double> desiredOuputs)
+        {
+            var diff = guesses.Subtract(desiredOuputs);
+            diff.MapInplace(elem => elem*elem);
+            double sum = 0;
+            for (var i = 0; i < diff.RowCount; i++)
+            {
+                sum += diff.At(i, 0);
+            }
+
+            return sum;
+        }
     }
 }

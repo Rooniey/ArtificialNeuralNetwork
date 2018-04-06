@@ -13,18 +13,16 @@ namespace IAD.DataService
 
             try
             {
-                using (StreamReader sr = new StreamReader(filePath))
+                using (var sr = new StreamReader(filePath))
                 {
                     string line;
-                    string[] row;
-                    double[] rowD;
                     while ((line = sr.ReadLine()) != null)
                     {
-                        row = line.Split(delimeter);
-                        rowD = new double[row.Length];
-                        for (int i = 0; i < row.Length; i++)
+                        var row = line.Split(delimeter);
+                        var rowD = new double[row.Length];
+                        for (var i = 0; i < row.Length; i++)
                         {
-                            rowD[i] = Double.Parse(row[i], CultureInfo.InvariantCulture);
+                            rowD[i] = double.Parse(row[i], CultureInfo.InvariantCulture);
                         }
                         data.Add(rowD);
                     }
@@ -32,7 +30,7 @@ namespace IAD.DataService
             }
             catch (Exception e)
             {
-                Console.WriteLine("The file could not be read:");
+                Console.Write("The file could not be read:");
                 Console.WriteLine(e.Message);
             }
 
