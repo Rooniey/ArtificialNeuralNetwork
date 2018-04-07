@@ -36,5 +36,10 @@ namespace NeuralNetworkPresentation
             gr.Show();
 
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
     }
 }
