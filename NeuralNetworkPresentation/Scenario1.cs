@@ -14,13 +14,13 @@ namespace NeuralNetworkPresentation
         public Network NeuralNetwork { get; set; }
         public List<TrainingElement> TrainingSet { get; set; }
 
-        private IStatiscticable _staticstics;
+        private IStatiscticable _statistics;
 
         public Scenario1(Network net, List<TrainingElement> train, TrainingData td, IStatiscticable stat)
         {
             NeuralNetwork = net;
             TrainingSet = train;
-            _staticstics = stat;
+            _statistics = stat;
             
         }
 

@@ -46,7 +46,7 @@ namespace NeuralNetworkPresentation
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            var neurons = (TextBlock)this.FindName("NumberOfNeurons");
+            var neurons = (TextBox)this.FindName("NumberOfNeurons");
             var s = ((CheckBox)this.FindName("Sigmoid"));
             var sigmoid = false;
             if (s?.IsChecked != null)
@@ -62,7 +62,8 @@ namespace NeuralNetworkPresentation
             }
 
             var layerToAdd = $"{NumberOfNeurons.Text} {(sigmoid ? "S" : "I")} { (bias ? "B" : "U")}";
-            var list = (ListView) this.FindName("Layers");
+            var list = (ListBox) this.FindName("Layers");
+            list.Items.Add(layerToAdd);
 
         }
     }
