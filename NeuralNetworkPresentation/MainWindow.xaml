@@ -7,26 +7,43 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="700" Width="1050">
     <Grid>
-        <TextBox x:Name="TrainPath" HorizontalAlignment="Left" Height="23" Margin="10,34,0,0" TextWrapping="Wrap" Text="./bin/Debug/transformation.txt" VerticalAlignment="Top" Width="206" TextChanged="TextBox_TextChanged"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap" Text="Training data filepath" VerticalAlignment="Top" Height="24" Width="122"/>
-        <TextBox x:Name="TestPath" HorizontalAlignment="Left" Height="23" Margin="244,34,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" TextChanged="TextBox_TextChanged"/>
-        <TextBlock HorizontalAlignment="Left" Margin="244,10,0,0" TextWrapping="Wrap" Text="Testing data filepath" VerticalAlignment="Top" Height="19" Width="114"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" Text="Number of inputs" VerticalAlignment="Top" Width="116"/>
-        <TextBox x:Name="InputNumber" HorizontalAlignment="Left" Height="23" Margin="10,83,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="91"/>
-        <TextBlock HorizontalAlignment="Left" Margin="112,62,0,0" TextWrapping="Wrap" Text="Number of epochs" VerticalAlignment="Top" Width="108"/>
-        <TextBox x:Name="Epochs" HorizontalAlignment="Left" Height="23" Margin="112,83,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="100" TextChanged="TextBox_TextChanged_1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="226,62,0,0" TextWrapping="Wrap" Text="Learning rate" VerticalAlignment="Top" Width="108"/>
-        <TextBox x:Name="LearningRate" HorizontalAlignment="Left" Height="23" Margin="226,83,0,0" TextWrapping="Wrap" Text="0.1" VerticalAlignment="Top" Width="98" TextChanged="TextBox_TextChanged_1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="338,62,0,0" TextWrapping="Wrap" Text="Momentum" VerticalAlignment="Top" Width="108"/>
-        <TextBox x:Name="Momentum" HorizontalAlignment="Left" Height="23" Margin="338,83,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="98" TextChanged="TextBox_TextChanged_1"/>
-        <TextBlock HorizontalAlignment="Left" Margin="451,62,0,0" TextWrapping="Wrap" Text="Desired error" VerticalAlignment="Top" Width="108"/>
-        <TextBox x:Name="DesiredError" HorizontalAlignment="Left" Height="23" Margin="451,83,0,0" TextWrapping="Wrap" Text="0.01" VerticalAlignment="Top" Width="98" TextChanged="TextBox_TextChanged_1"/>
-        <ListBox x:Name="Layers" HorizontalAlignment="Left" Height="129" Margin="204,138,0,0" VerticalAlignment="Top" Width="130"/>
-        <TextBlock HorizontalAlignment="Left" Margin="252,117,0,0" TextWrapping="Wrap" Text="Layers" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="10,117,0,0" TextWrapping="Wrap" Text="Number of neurons" VerticalAlignment="Top" Width="116"/>
-        <TextBox x:Name="NumberOfNeurons" HorizontalAlignment="Left" Height="23" Margin="10,138,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="91"/>
-        <CheckBox x:Name="Bias" Content="Biased" HorizontalAlignment="Left" Margin="10,166,0,0" VerticalAlignment="Top"/>
-        <CheckBox x:Name="Sigmoid" Content="Sigmoid function" HorizontalAlignment="Left" Margin="10,187,0,0" VerticalAlignment="Top"/>
-            <Button Content="Add Layer" HorizontalAlignment="Left" Margin="91,245,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click"/>
+        <TextBlock HorizontalAlignment="Left" Margin="10,7,0,0" TextWrapping="Wrap" Text="Number of inputs" VerticalAlignment="Top" Width="116" />
+        <TextBox x:Name="InputNumber" HorizontalAlignment="Left" Height="23" Margin="10,28,0,0" TextWrapping="Wrap" Text="4" VerticalAlignment="Top" Width="91" />
+        <ListBox x:Name="Layers" HorizontalAlignment="Left" Height="129" Margin="204,83,0,0" VerticalAlignment="Top" Width="130" />
+        <TextBlock HorizontalAlignment="Left" Margin="252,62,0,0" TextWrapping="Wrap" Text="Layers" VerticalAlignment="Top" />
+        <TextBlock HorizontalAlignment="Left" Margin="10,62,0,0" TextWrapping="Wrap" Text="Number of neurons" VerticalAlignment="Top" Width="116" />
+        <TextBox x:Name="NumberOfNeurons" HorizontalAlignment="Left" Height="23" Margin="10,83,0,0" TextWrapping="Wrap" Text="2" VerticalAlignment="Top" Width="91" />
+        <CheckBox x:Name="Bias" Content="Biased" HorizontalAlignment="Left" Margin="10,111,0,0" VerticalAlignment="Top" />
+        <CheckBox x:Name="Sigmoid" Content="Sigmoid function" HorizontalAlignment="Left" Margin="10,132,0,0" VerticalAlignment="Top" />
+        <Button Content="Add Layer" HorizontalAlignment="Left" Margin="91,190,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" />
+        <Button Content="Create network" HorizontalAlignment="Left" Margin="349,227,0,0" VerticalAlignment="Top" Width="134" Height="34" Click="Button_Click_1" />
+        <TextBlock HorizontalAlignment="Left" Margin="10,285,0,0" TextWrapping="Wrap" Text="Number of epochs" VerticalAlignment="Top" Width="108" />
+        <TextBox x:Name="NumberOfEpochs" HorizontalAlignment="Left" Height="23" Margin="10,306,0,0" TextWrapping="Wrap" Text="50" VerticalAlignment="Top" Width="100" TextChanged="TextBox_TextChanged_1" />
+        <TextBlock HorizontalAlignment="Left" Margin="124,285,0,0" TextWrapping="Wrap" Text="Learning rate" VerticalAlignment="Top" Width="108" />
+        <TextBox x:Name="LearningRat" HorizontalAlignment="Left" Height="23" Margin="124,306,0,0" TextWrapping="Wrap" Text="0.1" VerticalAlignment="Top" Width="98" TextChanged="TextBox_TextChanged_1" />
+        <TextBlock HorizontalAlignment="Left" Margin="236,285,0,0" TextWrapping="Wrap" Text="Momentum" VerticalAlignment="Top" Width="108" />
+        <TextBox x:Name="Moment" HorizontalAlignment="Left" Height="23" Margin="236,306,0,0" TextWrapping="Wrap" Text="0" VerticalAlignment="Top" Width="98" TextChanged="TextBox_TextChanged_1" />
+        <TextBlock HorizontalAlignment="Left" Margin="349,285,0,0" TextWrapping="Wrap" Text="Desired error" VerticalAlignment="Top" Width="108" />
+        <TextBox x:Name="DesiredErr" HorizontalAlignment="Left" Height="23" Margin="349,306,0,0" TextWrapping="Wrap" Text="0.01" VerticalAlignment="Top" Width="98" TextChanged="TextBox_TextChanged_1" />
+        <TextBox x:Name="TrainPath" HorizontalAlignment="Left" Height="23" Margin="18,368,0,0" TextWrapping="Wrap" Text="transformation.txt" VerticalAlignment="Top" Width="206" TextChanged="TextBox_TextChanged" />
+        <TextBlock HorizontalAlignment="Left" Margin="18,344,0,0" TextWrapping="Wrap" Text="Training data filepath" VerticalAlignment="Top" Height="24" Width="122" />
+        <TextBox x:Name="TestPath" HorizontalAlignment="Left" Height="23" Margin="252,368,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="206" TextChanged="TextBox_TextChanged" />
+        <TextBlock HorizontalAlignment="Left" Margin="252,344,0,0" TextWrapping="Wrap" Text="Testing data filepath" VerticalAlignment="Top" Height="19" Width="114" />
+        <ComboBox x:Name="TaskOption" HorizontalAlignment="Left" Margin="18,414,0,0" VerticalAlignment="Top" Width="173" SelectedIndex="0">
+            <ComboBoxItem Content="Task 1 Transformation" />
+            <ComboBoxItem Content="Task 2 Approximation" />
+            <ComboBoxItem Content="Task 3 Classification" />
+        </ComboBox>
+        <Button Content="Run Task" HorizontalAlignment="Left" Margin="365,415,0,0" VerticalAlignment="Top" Width="109" Height="36" RenderTransformOrigin="0.5,0.5" Click="Button_Click_2">
+            <Button.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform />
+                    <SkewTransform />
+                    <RotateTransform Angle="0.293" />
+                    <TranslateTransform />
+                </TransformGroup>
+            </Button.RenderTransform>
+        </Button>
+        <Button Content="Clear Layers" HorizontalAlignment="Left" Margin="10,190,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_3" />
     </Grid>
 </Window>

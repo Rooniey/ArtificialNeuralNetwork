@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using OxyPlot;
+using System.Collections.Generic;
 using System.Windows;
-using OxyPlot;
 
 namespace NeuralNetworkPresentation
 {

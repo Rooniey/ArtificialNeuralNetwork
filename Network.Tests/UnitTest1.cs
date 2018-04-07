@@ -1,11 +1,10 @@
-﻿using System;
-using MathNet.Numerics.LinearAlgebra;
+﻿using MathNet.Numerics.LinearAlgebra;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
-using System.Globalization;
 using NeuralNetwork.ActivationFunctions;
 using NeuralNetwork.Model;
 using NeuralNetwork.Utility;
+using System;
+using System.Collections.Generic;
 using Layer = NeuralNetwork.Model.Layer;
 using Network = NeuralNetwork.Model.Network;
 
@@ -26,7 +25,7 @@ namespace NetworkTests
         public void TestTrainingElement()
         {
             var trainingElems =
-                new List<TrainingElement> {new TrainingElement(new double[,] {{1}, {1}}, new double[,] {{23}})};
+                new List<TrainingElement> { new TrainingElement(new double[,] { { 1 }, { 1 } }, new double[,] { { 23 } }) };
         }
 
         //        [TestMethod] XOR TEST
@@ -81,8 +80,6 @@ namespace NetworkTests
             //layer2.WeightMatrix = Matrix<double>.Build.DenseOfArray(new double[,] { { 1, 1, 1 } });
             var trainingElems = new List<TrainingElement>();
 
-
-
             trainingElems.Add(new TrainingElement(new double[,] { { 1 }, { 0 }, { 0 }, { 0 } }, new double[,] { { 1 }, { 0 }, { 0 }, { 0 } }));
 
             trainingElems.Add(new TrainingElement(new double[,] { { 0 }, { 1 }, { 0 }, { 0 } }, new double[,] { { 0 }, { 1 }, { 0 }, { 0 } }));
@@ -90,7 +87,6 @@ namespace NetworkTests
             trainingElems.Add(new TrainingElement(new double[,] { { 0 }, { 0 }, { 1 }, { 0 } }, new double[,] { { 0 }, { 0 }, { 1 }, { 0 } }));
 
             trainingElems.Add(new TrainingElement(new double[,] { { 0 }, { 0 }, { 0 }, { 1 } }, new double[,] { { 0 }, { 0 }, { 0 }, { 1 } }));
-
 
             network.Train(0.5, 1000, 0.85, trainingElems);
             var kupa0 = network.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { 1 }, { 0 }, { 0 }, { 0 } }));
@@ -101,9 +97,7 @@ namespace NetworkTests
             Console.WriteLine($"1 0 {kup2a}");
             var kupa3 = network.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 0 }, { 0 }, { 1 } }));
             Console.WriteLine($"0 0 {kupa3}");
-
         }
-
 
         ////[TestMethod]
         //public void PropagationTest()
@@ -175,9 +169,7 @@ namespace NetworkTests
         //            var trainingElems = new List<TrainingElement>();
         //            trainingElems.Add(new TrainingElement(new double[,] { { 1 }, { 1 } }, new double[,] { {23} }));
         //
-        //        //    net.Train(0.1, 10, trainingElems); 
-
-
+        //        //    net.Train(0.1, 10, trainingElems);
 
         [TestMethod]
         public void SimpleLearningTest()
@@ -188,15 +180,14 @@ namespace NetworkTests
 
             var trainingElems = new List<TrainingElement>();
 
-
             Random rand = new Random();
             double x, y;
             for (int i = 0; i < 1000; i++)
             {
                 x = rand.NextDouble() * 10;
                 y = rand.NextDouble() * 10;
-                trainingElems.Add(new TrainingElement(new double[,] {{x},{y}},
-                    new double[,] {{(2.0 / 3.0) * x < y ? 1 : 0}}));
+                trainingElems.Add(new TrainingElement(new double[,] { { x }, { y } },
+                    new double[,] { { (2.0 / 3.0) * x < y ? 1 : 0 } }));
             }
 
             //trainingElems.Add(new TrainingElement(new double[,] { { 0, 1 } }, new double[,] { { 1 } }));
@@ -205,12 +196,12 @@ namespace NetworkTests
 
             //trainingElems.Add(new TrainingElement(new double[,] { { 1, 1 } }, new double[,] { { -1 } }));
 
-            net.Train(0.1, 100,0, trainingElems);
+            net.Train(0.1, 100, 0, trainingElems);
 
-            var outp1 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] {{0},{ 1}})); //0
-            var outp2 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] {{1},{0}})); //1
-            var outp3 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] {{2}, {5}})); //0
-            var outp4 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] {{4},{ 1}})); //1
+            var outp1 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 1 } })); //0
+            var outp2 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { 1 }, { 0 } })); //1
+            var outp3 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { 2 }, { 5 } })); //0
+            var outp4 = net.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { 4 }, { 1 } })); //1
         }
     }
 }

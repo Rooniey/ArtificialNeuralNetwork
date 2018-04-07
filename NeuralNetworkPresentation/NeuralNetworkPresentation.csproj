@@ -62,9 +62,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Scenario1.cs" />
-    <Compile Include="Statistics\IStatiscticable.cs" />
-    <Compile Include="TrainingData.cs" />
+    <Compile Include="TrainingParameters.cs" />
     <Page Include="GraphWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -113,10 +111,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\IAD\IAD.csproj">
-      <Project>{53287896-5508-4876-941c-74f8547d7266}</Project>
-      <Name>IAD</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NeuralNetwork\NeuralNetwork.csproj">
       <Project>{8dc2442f-0ee4-411b-9c26-19d9816a3ad6}</Project>
       <Name>NeuralNetwork</Name>

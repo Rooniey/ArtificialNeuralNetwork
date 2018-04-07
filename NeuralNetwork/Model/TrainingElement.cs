@@ -15,7 +15,7 @@ namespace NeuralNetwork.Model
 
         public void AddInput(double[,] input)
         {
-            Input = Matrix<double>.Build.DenseOfArray(input); 
+            Input = Matrix<double>.Build.DenseOfArray(input);
         }
 
         public void AddDesiredOutput(double[,] output)

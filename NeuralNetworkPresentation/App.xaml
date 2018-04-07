@@ -4,6 +4,5 @@
              xmlns:local="clr-namespace:NeuralNetworkPresentation"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
     </Application.Resources>
 </Application>

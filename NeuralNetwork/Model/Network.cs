@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using MathNet.Numerics.LinearAlgebra;
+using System.Collections.Generic;
 using System.Linq;
-using MathNet.Numerics.LinearAlgebra;
 
 namespace NeuralNetwork.Model
 {
@@ -21,13 +21,16 @@ namespace NeuralNetwork.Model
         {
             var previousSize = Layers.Count == 0 ? InputSize : Layers.Last().NeuronCount;
             layer.LayerUtility.InitLayer(layer, previousSize);
-            Layers.Add(layer);         
+            Layers.Add(layer);
         }
 
         public void Train(double learningRate, int epochs, double momentum, List<TrainingElement> inputs, double desiredError = 0)
         {
-            for (var i = 0; i < epochs && desiredError > Errors[i]; i++)
+            ResetLayers();
+            Errors.Clear();
+            for (var i = 0; i < epochs; i++)
             {
+                //TODO check error
                 List<double> epochsErrors = new List<double>();
                 for (var j = 0; j < inputs.Count; j++)
                 {
@@ -44,14 +47,14 @@ namespace NeuralNetwork.Model
                     //an equation for the error δl in terms of the error in the next layer, δl + 1
                     for (var k = Layers.Count - 2; k >= 0; k--)
                     {
-                        Layers[k].Backpropagate(Layers[k+1]);
+                        Layers[k].Backpropagate(Layers[k + 1]);
                     }
 
                     Layers.First().UpdateLayer(inputs[j].Input, learningRate, momentum);
 
                     for (var k = 1; k < Layers.Count; k++)
                     {
-                        Layers[k].UpdateLayer(Layers[k-1].Activation, learningRate, momentum);
+                        Layers[k].UpdateLayer(Layers[k - 1].Activation, learningRate, momentum);
                     }
                 }
                 Errors.Add(epochsErrors.Sum() / inputs.Count);
@@ -71,7 +74,7 @@ namespace NeuralNetwork.Model
         private double MeanSquaredError(Matrix<double> guesses, Matrix<double> desiredOuputs)
         {
             var diff = guesses.Subtract(desiredOuputs);
-            diff.MapInplace(elem => elem*elem);
+            diff.MapInplace(elem => elem * elem);
             double sum = 0;
             for (var i = 0; i < diff.RowCount; i++)
             {
@@ -80,5 +83,17 @@ namespace NeuralNetwork.Model
 
             return sum;
         }
+
+        private void ResetLayers()
+        {
+            var previousSize = InputSize;
+            foreach (var t in Layers)
+            {
+                t.LayerUtility.InitLayer(t, previousSize);
+                previousSize = t.NeuronCount;
+            }
+        }
+        
+      
     }
 }

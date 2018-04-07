@@ -28,6 +28,7 @@ namespace NeuralNetwork.Utility
 
             return a;
         }
+
         public void Backpropagate(Layer layer, Layer nextLayer)
         {
             var sigmoidDerivative =

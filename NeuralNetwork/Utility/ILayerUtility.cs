@@ -12,6 +12,5 @@ namespace NeuralNetwork.Utility
         void Backpropagate(Layer layer, Layer nextLayer);
 
         void UpdateLayer(Layer layer, Matrix<double> a, double learningRate, double momentum);
-
     }
 }

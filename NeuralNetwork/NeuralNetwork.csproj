@@ -47,6 +47,8 @@
   <ItemGroup>
     <Compile Include="ActivationFunctions\IActivationFunction.cs" />
     <Compile Include="ActivationFunctions\IdentityFunction.cs" />
+    <Compile Include="DataService\DataGetter.cs" />
+    <Compile Include="DataService\ILiterate.cs" />
     <Compile Include="Model\Layer.cs" />
     <Compile Include="Model\Network.cs" />
     <Compile Include="Utility\ILayerUtility.cs" />
