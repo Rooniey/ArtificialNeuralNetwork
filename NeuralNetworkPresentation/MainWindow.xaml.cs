@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using NeuralNetwork.Model;
+
 
 namespace NeuralNetworkPresentation
 {
@@ -24,16 +26,43 @@ namespace NeuralNetworkPresentation
         public MainWindow()
         {
             InitializeComponent();
+            
+            
 
-            var x = new List<double>() { 1, 2, 3, 4, 5, 6, 7 };
-            var y = new List<double>() { 0.23, 3, 4, 2, 5.67, 5.34, 5.78 };
-            var points = new List<DataPoint>();
-            for (int i = 0; i < x.Count; i++)
+        }
+
+        public Network Network { get; set; }
+        public List<Layer> NetworkLayers { get; set; }
+        
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void TextBox_TextChanged_1(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var neurons = (TextBlock)this.FindName("NumberOfNeurons");
+            var s = ((CheckBox)this.FindName("Sigmoid"));
+            var sigmoid = false;
+            if (s?.IsChecked != null)
             {
-                points.Add(new DataPoint(x[i], y[i]));
+                sigmoid = s.IsChecked.Value;
             }
-            var gr = new GraphWindow("Wykres bledu", points, "nr epoki", "blad");
-            gr.Show();
+            
+            var b = (CheckBox) this.FindName("Bias");
+            var bias = false;
+            if (b?.IsChecked != null)
+            {
+                bias = b.IsChecked.Value;
+            }
+
+            var layerToAdd = $"{NumberOfNeurons.Text} {(sigmoid ? "S" : "I")} { (bias ? "B" : "U")}";
+            var list = (ListView)this.FindName("Layers")
 
         }
     }
