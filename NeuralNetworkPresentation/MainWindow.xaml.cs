@@ -62,7 +62,7 @@ namespace NeuralNetworkPresentation
             }
 
             var layerToAdd = $"{NumberOfNeurons.Text} {(sigmoid ? "S" : "I")} { (bias ? "B" : "U")}";
-            var list = (ListView)this.FindName("Layers")
+            var list = (ListView) this.FindName("Layers");
 
         }
     }
