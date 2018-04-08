@@ -235,11 +235,6 @@ namespace NeuralNetworkPresentation
                     Title = $"Validation set accuracy Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
                 });
 
-
-
-
-
-
             }
         }
 
@@ -353,26 +348,6 @@ namespace NeuralNetworkPresentation
 
             trainingPoints = trainingPoints.OrderBy(elem => elem.X).ToList();
 
-            //                List<TrainingElement> training1 = dg.GetSetOfData("approximation2.txt", Network.InputSize);
-            //                IList<DataPoint> trainingPoints1 = new List<DataPoint>();
-            //                foreach (var train in training1)
-            //                {
-            //                    var x = train.Input.At(0, 0);
-            //                    var y = train.DesiredOutput.At(0, 0);
-            //                    trainingPoints1.Add(new DataPoint(x, y));
-            //                }
-            //
-            //                trainingPoints1 = trainingPoints1.OrderBy(elem => elem.X).ToList();
-
-            //                List<TrainingElement> training2 = dg.GetSetOfData("approximation_test.txt", Network.InputSize);
-            //                IList<DataPoint> trainingPoints2 = new List<DataPoint>();
-            //                foreach (var train in training2)
-            //                {
-            //                    var x = train.Input.At(0, 0);
-            //                    var y = train.DesiredOutput.At(0, 0);
-            //                    trainingPoints2.Add(new DataPoint(x, y));
-            //                }
-
             IList<DataPoint> testing = new List<DataPoint>();
 
             for (double i = -4; i <= 4; i += 0.1)
@@ -380,8 +355,7 @@ namespace NeuralNetworkPresentation
                 var losowe = Network.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { i } }));
                 testing.Add(new DataPoint(i, losowe.At(0, 0)));
             }
-            //
-            //            trainingPoints2 = trainingPoints2.OrderBy(elem => elem.X).ToList();
+
             List<LineSeries> serieses = new List<LineSeries>() {
                 new LineSeries
                 {
@@ -406,6 +380,27 @@ namespace NeuralNetworkPresentation
             GraphWindow gw = new GraphWindow("Graph", "epoch", "accuracy", SeriesList2);
             gw.Show();
             SeriesList2.Clear();
+        }
+
+        private void TaskOption_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+   
+            var option = e.AddedItems[0].ToString().ToLower();
+            if (option.Contains("transformation"))
+            {
+                TrainPath.Text = "transformation.txt";
+                TestPath.Text = "";
+            }
+            else if (option.Contains("approximation"))
+            {
+                TrainPath.Text = "approximation1.txt";
+                TestPath.Text = "approximation_test.txt";
+            }
+            else if (option.Contains("classification"))
+            {
+                TrainPath.Text = "classification.txt";
+                TestPath.Text = "classification_test.txt";
+            }
         }
     }
 }

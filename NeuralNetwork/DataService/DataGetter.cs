@@ -75,7 +75,6 @@ namespace NeuralNetwork.DataService
             {
                 var input = new double[numberOfInputs, 1];
                 var output = new double[1, 1];
-                var j = 0;
                 for (var i = 0; i < example.Length; i++)
                 {
                     if (i < numberOfInputs)

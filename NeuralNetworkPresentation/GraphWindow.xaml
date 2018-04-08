@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:NeuralNetworkPresentation"
         mc:Ignorable="d"
-        Title="GraphWindow" Height="300" Width="300">
+        Title="GraphWindow" Height="600" Width="1100">
     <Grid>
         <oxy:Plot Name="Plot" Title="{Binding GraphName}">
 <!--            <oxy:Plot.Series >-->

@@ -46,7 +46,7 @@ namespace NeuralNetwork.Utility
             var delta = layer.DeltaL.Multiply(a.Transpose()).InsertColumn(layer.WeightMatrix.ColumnCount - 1, layer.DeltaL.Column(0)).Multiply(learningRate);
             var add = layer.WeightsDeltas.Multiply(momentum);
             layer.WeightsDeltas = delta.Add(add);
-            layer.WeightMatrix = layer.WeightMatrix.Subtract(delta);
+            layer.WeightMatrix = layer.WeightMatrix.Subtract(layer.WeightsDeltas);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using System.Collections.Generic;
 using System.Linq;
+using MathNet.Numerics;
 using NeuralNetwork.Statistics;
 
 namespace NeuralNetwork.Model
@@ -32,7 +33,6 @@ namespace NeuralNetwork.Model
             Errors.Clear();
             for (var i = 0; i < epochs; i++)
             {
-                //TODO check error
                 List<double> epochsErrors = new List<double>();
                 for (var j = 0; j < inputs.Count; j++)
                 {
@@ -60,7 +60,7 @@ namespace NeuralNetwork.Model
                     }
                 }
                 Errors.Add(epochsErrors.Sum() / inputs.Count);
-
+                if (Errors[i] <= desiredError) break;
                 Gatherer.GatherStatistics(this);
             }
         }
