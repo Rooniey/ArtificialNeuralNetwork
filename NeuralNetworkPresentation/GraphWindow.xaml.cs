@@ -17,7 +17,6 @@ namespace NeuralNetworkPresentation
             GraphName = name;
             NameX = nameX;
             NameY = nameY;
-            Plot.LegendTitle = "Legenda";
             Plot.LegendTitleFontSize = 20;
             Plot.LegendFontSize = 14;
             Plot.LegendBorder = Color.FromRgb(0,0,0);

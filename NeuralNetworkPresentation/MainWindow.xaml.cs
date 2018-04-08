@@ -213,6 +213,27 @@ namespace NeuralNetworkPresentation
                     pointsAccurracyV.Add(new DataPoint(i + 1, accuracyAveragesV[i]));
                 }
 
+                //calculate error matrix
+                List<Tuple<int, int>> DesiredAndActualOutputs = new List<Tuple<int, int>>();
+                foreach (var telem in testData)
+                {
+
+                    var desired = ((ClassificationGatherer)Network.Gatherer).ConvertMatrixToClass(telem.DesiredOutput);
+                    var gotten = ((ClassificationGatherer)Network.Gatherer).ConvertMatrixToClass(Network.ForwardPropagation(telem.Input));
+                    DesiredAndActualOutputs.Add(new Tuple<int, int>(desired, gotten));
+                }
+
+                int[,] ErrorMatrix = new int[3, 3];
+
+                foreach (var tupel in DesiredAndActualOutputs)
+                {
+                    ErrorMatrix[tupel.Item1 - 1, tupel.Item2 - 1]++;
+                }
+
+                WindowDataGrid wdg = new WindowDataGrid(ErrorMatrix);
+                wdg.Show();
+              
+
                 SeriesList.Add(new LineSeries
                 {
                     ItemsSource = points,
@@ -377,7 +398,7 @@ namespace NeuralNetworkPresentation
 
         private void Button_Click_ShowAccuracyGraph(object sender, RoutedEventArgs e)
         {
-            GraphWindow gw = new GraphWindow("Graph", "epoch", "accuracy", SeriesList2);
+            GraphWindow gw = new GraphWindow("Accuracy over epochs", "epoch", "accuracy", SeriesList2);
             gw.Show();
             SeriesList2.Clear();
         }
@@ -402,5 +423,7 @@ namespace NeuralNetworkPresentation
                 TestPath.Text = "classification_test.txt";
             }
         }
+
+        
     }
 }

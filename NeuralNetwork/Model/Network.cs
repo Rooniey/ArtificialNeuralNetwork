@@ -18,6 +18,7 @@ namespace NeuralNetwork.Model
             Layers = new List<Layer>();
             InputSize = inputSize;
             Errors = new List<double>();
+            
         }
 
         public void AddLayer(Layer layer)
