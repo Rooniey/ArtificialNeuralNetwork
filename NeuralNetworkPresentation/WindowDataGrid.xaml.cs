@@ -39,8 +39,10 @@ namespace NeuralNetworkPresentation
                 });
             }
 
-            Precision.Text = Compute.GetPrecision(data).ToString(CultureInfo.InvariantCulture);
-            Accuracy.Text = Compute.GetAccuracy(data).ToString(CultureInfo.InvariantCulture);
+            Accuracy.Text = Compute.GetAccuracy(data).ToString(CultureInfo.InvariantCulture).Substring(0, 3);
+            Precision.Text = Compute.GetPrecision(data).ToString(CultureInfo.InvariantCulture).Substring(0,3);     
+            Sensitivity.Text = Compute.GetAccuracy(data).ToString(CultureInfo.InvariantCulture).Substring(0, 3);
+
 
             Data.ItemsSource = dataGridsData;
             Data.CanUserAddRows = false;

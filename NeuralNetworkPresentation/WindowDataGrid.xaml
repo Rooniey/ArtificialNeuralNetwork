@@ -10,8 +10,8 @@
         <TextBlock HorizontalAlignment="Left" Margin="132,0,0,0" TextWrapping="Wrap" Text="Confusion Matrix" VerticalAlignment="Top" Height="28" Width="169"/>
         <TextBlock HorizontalAlignment="Left" Margin="25,28,0,0" TextWrapping="Wrap" Text="Accuracy:" VerticalAlignment="Top"/>
         <TextBlock x:Name="Accuracy" HorizontalAlignment="Left" Margin="80,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
-        <TextBlock HorizontalAlignment="Left" Margin="179,28,0,0" TextWrapping="Wrap" Text="Precision" VerticalAlignment="Top"/>
-        <TextBlock x:Name="Precision" HorizontalAlignment="Left" Margin="234,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
+        <TextBlock HorizontalAlignment="Left" Margin="119,28,0,0" TextWrapping="Wrap" Text="Precision" VerticalAlignment="Top"/>
+        <TextBlock x:Name="Precision" HorizontalAlignment="Left" Margin="174,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
         <DataGrid ColumnWidth="*" Name="Data" AutoGenerateColumns="False" Margin="0,64,10,39">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="" Binding="{Binding RowName}"/>
@@ -20,6 +20,8 @@
                 <DataGridTextColumn Header="Predicted 3" Binding="{Binding Third}"/>
             </DataGrid.Columns>
         </DataGrid>
+        <TextBlock HorizontalAlignment="Left" Margin="218,28,0,0" TextWrapping="Wrap" Text="Sensitivity:" VerticalAlignment="Top"/>
+        <TextBlock x:Name="Sensitivity" HorizontalAlignment="Left" Margin="276,28,0,0" TextWrapping="Wrap" VerticalAlignment="Top"/>
 
     </Grid>
 
