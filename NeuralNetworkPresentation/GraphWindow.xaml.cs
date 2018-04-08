@@ -1,6 +1,7 @@
 ﻿using OxyPlot;
 using System.Collections.Generic;
 using System.Windows;
+using OxyPlot.Wpf;
 
 namespace NeuralNetworkPresentation
 {
@@ -9,17 +10,20 @@ namespace NeuralNetworkPresentation
     /// </summary>
     public partial class GraphWindow : Window
     {
-        public GraphWindow(string name, IList<DataPoint> points, string nameX, string nameY)
+        public GraphWindow(string name, string nameX, string nameY,  List<LineSeries> serieses)
         {
             InitializeComponent();
-            DataPoints = points;
             GraphName = name;
             NameX = nameX;
             NameY = nameY;
+            Plot.LegendTitle = "Legenda";
+            foreach (var series in serieses)
+            {               
+                Plot.Series.Add(series);
+            }
             DataContext = this;
         }
 
-        public IList<DataPoint> DataPoints { get; private set; }
         public string GraphName { get; private set; }
         public string NameX { get; private set; }
         public string NameY { get; private set; }

@@ -65,5 +65,33 @@ namespace NeuralNetwork.DataService
 
             return setData;
         }
+
+        public List<TrainingElement> GetSetOfDataWithOneOutput(string path, int numberOfInputs)
+        {
+            IEnumerable<double[]> data = GetData(path, ' ');
+            List<TrainingElement> setData = new List<TrainingElement>();
+
+            foreach (var example in data)
+            {
+                var input = new double[numberOfInputs, 1];
+                var output = new double[1, 1];
+                var j = 0;
+                for (var i = 0; i < example.Length; i++)
+                {
+                    if (i < numberOfInputs)
+                    {
+                        input[i, 0] = example[i];
+                    }
+                    else
+                    {
+                        output[0, 0] = example[example.Length - 1];
+                        break;
+                    }
+                }
+                setData.Add(new TrainingElement(input, output));
+            }
+
+            return setData;
+        }
     }
 }

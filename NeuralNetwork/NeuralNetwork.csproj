@@ -51,6 +51,10 @@
     <Compile Include="DataService\ILiterate.cs" />
     <Compile Include="Model\Layer.cs" />
     <Compile Include="Model\Network.cs" />
+    <Compile Include="Statistics\ApproximationGatherer.cs" />
+    <Compile Include="Statistics\ClassificationGatherer.cs" />
+    <Compile Include="Statistics\IStatisticGatherer.cs" />
+    <Compile Include="Statistics\TransformationGatherer.cs" />
     <Compile Include="Utility\ILayerUtility.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ActivationFunctions\SigmoidFunction.cs" />

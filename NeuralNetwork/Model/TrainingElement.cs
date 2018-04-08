@@ -2,10 +2,10 @@
 
 namespace NeuralNetwork.Model
 {
-    public struct TrainingElement
+    public class TrainingElement
     {
-        public Matrix<double> Input;
-        public Matrix<double> DesiredOutput;
+        public Matrix<double> Input { get; set; }
+        public Matrix<double> DesiredOutput { get; set; }
 
         public TrainingElement(double[,] input, double[,] output)
         {

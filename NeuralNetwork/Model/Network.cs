@@ -1,11 +1,13 @@
 ﻿using MathNet.Numerics.LinearAlgebra;
 using System.Collections.Generic;
 using System.Linq;
+using NeuralNetwork.Statistics;
 
 namespace NeuralNetwork.Model
 {
     public class Network
     {
+        public IStatisticGatherer Gatherer { get; set; }
         public List<Layer> Layers { get; private set; }
         public int InputSize { get; }
         public List<double> Errors { get; set; }
@@ -36,7 +38,7 @@ namespace NeuralNetwork.Model
                 {
                     var guess = ForwardPropagation(inputs[j].Input);
 
-                    epochsErrors.Add(MeanSquaredError(guess, inputs[j].Input));
+                    epochsErrors.Add(MeanSquaredError(guess, inputs[j].DesiredOutput));
 
                     //an equation for the error in the output layer, δL
                     var outputLayer = Layers.Last();
@@ -58,6 +60,8 @@ namespace NeuralNetwork.Model
                     }
                 }
                 Errors.Add(epochsErrors.Sum() / inputs.Count);
+
+                Gatherer.GatherStatistics(this);
             }
         }
 
@@ -71,7 +75,7 @@ namespace NeuralNetwork.Model
             return a;
         }
 
-        private double MeanSquaredError(Matrix<double> guesses, Matrix<double> desiredOuputs)
+        public static double MeanSquaredError(Matrix<double> guesses, Matrix<double> desiredOuputs)
         {
             var diff = guesses.Subtract(desiredOuputs);
             diff.MapInplace(elem => elem * elem);

@@ -7,16 +7,16 @@
         mc:Ignorable="d"
         Title="GraphWindow" Height="300" Width="300">
     <Grid>
-        <oxy:Plot Title="{Binding GraphName}">
-            <oxy:Plot.Series>
-                <oxy:LineSeries ItemsSource="{Binding DataPoints}" />
+        <oxy:Plot Name="Plot" Title="{Binding GraphName}">
+<!--            <oxy:Plot.Series >-->
+<!--                <oxy:LineSeries ItemsSource="{Binding DataPoints}" />-->
 <!--                    MarkerStroke="Black"-->
 <!--                    MarkerStrokeThickness="2.0"-->
 <!--                    MarkerFill="Transparent"-->
 <!--                    MarkerSize="6"-->
 <!--                    MarkerType="Circle"-->
-                    
-            </oxy:Plot.Series>
+<!--                    -->
+<!--            </oxy:Plot.Series>-->
             <oxy:Plot.Axes>
                 <oxy:LinearAxis Title="{Binding NameY}" Position="Left" FontSize="15" FontWeight="ExtraBold"></oxy:LinearAxis>
                 <oxy:LinearAxis Title="{Binding NameX}" Position="Bottom" FontSize="15" FontWeight="ExtraBold"></oxy:LinearAxis>
