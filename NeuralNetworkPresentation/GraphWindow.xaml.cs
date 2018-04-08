@@ -18,7 +18,8 @@ namespace NeuralNetworkPresentation
             NameX = nameX;
             NameY = nameY;
             Plot.LegendTitleFontSize = 20;
-            Plot.LegendFontSize = 14;
+            Plot.LegendFontSize = 27;
+ 
             Plot.LegendBorder = Color.FromRgb(0,0,0);
             foreach (var series in serieses)
             {

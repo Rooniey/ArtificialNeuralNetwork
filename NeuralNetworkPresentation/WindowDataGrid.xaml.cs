@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using OxyPlot;
 
 namespace NeuralNetworkPresentation
 {
@@ -39,9 +40,9 @@ namespace NeuralNetworkPresentation
                 });
             }
 
-            Accuracy.Text = Compute.GetAccuracy(data).ToString(CultureInfo.InvariantCulture).Substring(0, 3);
-            Precision.Text = Compute.GetPrecision(data).ToString(CultureInfo.InvariantCulture).Substring(0,3);     
-            Sensitivity.Text = Compute.GetAccuracy(data).ToString(CultureInfo.InvariantCulture).Substring(0, 3);
+            Accuracy.Text = $"{Compute.GetAccuracy(data):N3}";
+            Precision.Text = $"{Compute.GetAccuracy(data):N3}";
+            Sensitivity.Text = $"{Compute.GetAccuracy(data):N3}";
 
 
             Data.ItemsSource = dataGridsData;
