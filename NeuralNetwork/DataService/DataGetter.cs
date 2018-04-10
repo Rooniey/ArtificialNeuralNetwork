@@ -92,5 +92,38 @@ namespace NeuralNetwork.DataService
 
             return setData;
         }
+
+        public List<TrainingElement> GetSetOfDataWithChosenInputs(string path,bool[] chosenInputs)
+        {
+            IEnumerable<double[]> data = GetData(path, ' ');
+            List<TrainingElement> setData = new List<TrainingElement>();
+
+            int numberOfInputs = 0;
+
+            foreach(var bit in chosenInputs)
+            {
+                if (bit) numberOfInputs++;
+            }
+
+
+            foreach (var example in data)
+            {
+                var input = new double[numberOfInputs, 1];
+                var output = new double[1, 1];
+                int j = 0;
+                for (int i = 0; i < chosenInputs.Length; i++)
+                {
+                    if (chosenInputs[i])
+                    {
+                        input[j, 0] = example[i];
+                        j++;
+                    }
+                }
+                output[0, 0] = example[example.Length - 1];
+                setData.Add(new TrainingElement(input, output));
+            }
+
+            return setData;
+        }
     }
 }

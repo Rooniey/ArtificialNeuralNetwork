@@ -41,8 +41,8 @@ namespace NeuralNetworkPresentation
             }
 
             Accuracy.Text = $"{Compute.GetAccuracy(data):N3}";
-            Precision.Text = $"{Compute.GetAccuracy(data):N3}";
-            Sensitivity.Text = $"{Compute.GetAccuracy(data):N3}";
+            //Precision.Text = $"{Compute.GetAccuracy(data):N3}";
+            //Sensitivity.Text = $"{Compute.GetAccuracy(data):N3}";
 
 
             Data.ItemsSource = dataGridsData;

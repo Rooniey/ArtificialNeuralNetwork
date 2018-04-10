@@ -13,6 +13,7 @@ using NeuralNetwork.DataService;
 using NeuralNetwork.Statistics;
 using OxyPlot;
 using OxyPlot.Wpf;
+using OxyPlot.Series;
 
 namespace NeuralNetworkPresentation
 {
@@ -97,8 +98,8 @@ namespace NeuralNetworkPresentation
             Layers.Items.Clear();
         }
 
-        public List<LineSeries> SeriesList { get; set; } = new List<LineSeries>();
-        public List<LineSeries> SeriesList2 { get; set; } = new List<LineSeries>();
+        public List<OxyPlot.Wpf.Series> SeriesList { get; set; } = new List<OxyPlot.Wpf.Series>();
+        public List<OxyPlot.Wpf.Series> SeriesList2 { get; set; } = new List<OxyPlot.Wpf.Series>();
 
         private void Button_Click_AddTask(object sender, RoutedEventArgs e)
         {
@@ -127,136 +128,143 @@ namespace NeuralNetworkPresentation
             }
             else if (selection.Contains("classification"))
             {
-                //get wanted number of inputs
+                //get wanted inputs
                 DataGetter dg = new DataGetter();
-                List<TrainingElement> data = dg.GetSetOfDataWithOneOutput(TrainPath.Text, Network.InputSize);
-                List<TrainingElement> testData = dg.GetSetOfDataWithOneOutput(TestPath.Text, Network.InputSize);
 
-                //translate class numbers to network-intelligible matrices
-                for (int i = 0; i < data.Count; i++)
-                {
-                    var output = data[i].DesiredOutput;
-                    switch (output.At(0, 0))
-                    {
-                        case 1:
-                            output = Matrix<double>.Build.DenseOfArray(new double[,] { { 1 }, { 0 }, { 0 } });
-                            break;
-                        case 2:
-                            output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 1 }, { 0 } });
-                            break;
-                        case 3:
-                            output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 0 }, { 1 } });
-                            break;
-                    }
-                    data[i].DesiredOutput = output;
-                }
-
-                for (int i = 0; i < testData.Count; i++)
-                {
-                    var output = testData[i].DesiredOutput;
-                    switch (output.At(0, 0))
-                    {
-                        case 1:
-                            output = Matrix<double>.Build.DenseOfArray(new double[,] { { 1 }, { 0 }, { 0 } });
-                            break;
-                        case 2:
-                            output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 1 }, { 0 } });
-                            break;
-                        case 3:
-                            output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 0 }, { 1 } });
-                            break;
-                    }
-                    testData[i].DesiredOutput = output;
-                }
-
-
-                Network.Gatherer = new ClassificationGatherer(testData, data);
-
-                int iterations = td.Iterat;
-                List<double> errorsAverage = new List<double>(new double[td.Epochs]);
-                List<double> testerErrorAverage = new List<double>(new double[td.Epochs]);
-                List<double> accuracyAveragesV = new List<double>(new double[td.Epochs]);
-                List<double> accuracyAveragesT = new List<double>(new double[td.Epochs]);
-
-                for (int i = 0; i < iterations; i++)
-                {
-                    Network.Train(td.LearningRate, td.Epochs, td.Momentum, data);
-
-                    
-                    for (int j = 0; j < Network.Errors.Count; j++)
-                    {
-                        errorsAverage[j] += Network.Errors[j];
-                        testerErrorAverage[j] += ((ClassificationGatherer)Network.Gatherer).TestErrors[j];
-                        accuracyAveragesV[j] += ((ClassificationGatherer)Network.Gatherer).AccuracyListV[j];
-                        accuracyAveragesT[j] += ((ClassificationGatherer)Network.Gatherer).AccuracyListT[j];
-                    }
-                }
-
-                //Calculate average properties
-                for (int j = 0; j < Network.Errors.Count; j++)
-                {
-                    errorsAverage[j] /= iterations;
-                    testerErrorAverage[j] /= iterations;
-                    accuracyAveragesV[j] /= iterations;
-                    accuracyAveragesT[j] /= iterations;
-                }
-
-                IList<DataPoint> points = new List<DataPoint>();
-                IList<DataPoint> pointsTestError = new List<DataPoint>();
-                IList<DataPoint> pointsAccurracyV = new List<DataPoint>();
-                IList<DataPoint> pointsAccuracyT = new List<DataPoint>();
-                for (int i = 0; i < Network.Errors.Count; i++)
-                {
-                    points.Add(new DataPoint(i + 1, errorsAverage[i]));
-                    pointsTestError.Add(new DataPoint(i + 1, testerErrorAverage[i]));
-                    pointsAccuracyT.Add(new DataPoint(i + 1, accuracyAveragesT[i]));
-                    pointsAccurracyV.Add(new DataPoint(i + 1, accuracyAveragesV[i]));
-                }
-
-                //calculate error matrix
-                List<Tuple<int, int>> DesiredAndActualOutputs = new List<Tuple<int, int>>();
-                foreach (var telem in testData)
-                {
-
-                    var desired = ((ClassificationGatherer)Network.Gatherer).ConvertMatrixToClass(telem.DesiredOutput);
-                    var gotten = ((ClassificationGatherer)Network.Gatherer).ConvertMatrixToClass(Network.ForwardPropagation(telem.Input));
-                    DesiredAndActualOutputs.Add(new Tuple<int, int>(desired, gotten));
-                }
-
-                int[,] ErrorMatrix = new int[3, 3];
-
-                foreach (var tupel in DesiredAndActualOutputs)
-                {
-                    ErrorMatrix[tupel.Item1 - 1, tupel.Item2 - 1]++;
-                }
-
-                WindowDataGrid wdg = new WindowDataGrid(ErrorMatrix);
-                wdg.Show();
-              
-
-                SeriesList.Add(new LineSeries
-                {
-                    ItemsSource = points,
-                    Title = $"Training error Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
-                });
-                SeriesList.Add(new LineSeries
-                {
-                    ItemsSource = pointsTestError,
-                    Title = $"Validation error Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
-                });
-
-                SeriesList2.Add(new LineSeries
-                {
-                    ItemsSource = pointsAccuracyT,
-                    Title = $"Training set accuracy Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
-                });
-                SeriesList2.Add(new LineSeries
-                {
-                    ItemsSource = pointsAccurracyV,
-                    Title = $"Validation set accuracy Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
-                });
+                var chosenInputs = new bool[] { FirstInput.IsChecked.Value, SecondInput.IsChecked.Value, ThirdInput.IsChecked.Value, FourthInput.IsChecked.Value};
+                List<TrainingElement> data = dg.GetSetOfDataWithChosenInputs(TrainPath.Text, chosenInputs);
+                List<TrainingElement> testData = dg.GetSetOfDataWithChosenInputs(TestPath.Text, chosenInputs);
+                
+                ClassificationScenario(td, data, testData);
 
             }
+        }
+
+        private void ClassificationScenario(TrainingParameters td, List<TrainingElement> data, List<TrainingElement> testData)
+        {
+            //translate class numbers to network-intelligible matrices
+            for (int i = 0; i < data.Count; i++)
+            {
+                var output = data[i].DesiredOutput;
+                switch (output.At(0, 0))
+                {
+                    case 1:
+                        output = Matrix<double>.Build.DenseOfArray(new double[,] { { 1 }, { 0 }, { 0 } });
+                        break;
+                    case 2:
+                        output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 1 }, { 0 } });
+                        break;
+                    case 3:
+                        output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 0 }, { 1 } });
+                        break;
+                }
+                data[i].DesiredOutput = output;
+            }
+
+            for (int i = 0; i < testData.Count; i++)
+            {
+                var output = testData[i].DesiredOutput;
+                switch (output.At(0, 0))
+                {
+                    case 1:
+                        output = Matrix<double>.Build.DenseOfArray(new double[,] { { 1 }, { 0 }, { 0 } });
+                        break;
+                    case 2:
+                        output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 1 }, { 0 } });
+                        break;
+                    case 3:
+                        output = Matrix<double>.Build.DenseOfArray(new double[,] { { 0 }, { 0 }, { 1 } });
+                        break;
+                }
+                testData[i].DesiredOutput = output;
+            }
+
+
+            Network.Gatherer = new ClassificationGatherer(testData, data);
+
+            int iterations = td.Iterat;
+            List<double> errorsAverage = new List<double>(new double[td.Epochs]);
+            List<double> testerErrorAverage = new List<double>(new double[td.Epochs]);
+            List<double> accuracyAveragesV = new List<double>(new double[td.Epochs]);
+            List<double> accuracyAveragesT = new List<double>(new double[td.Epochs]);
+
+            for (int i = 0; i < iterations; i++)
+            {
+                Network.Train(td.LearningRate, td.Epochs, td.Momentum, data);
+
+
+                for (int j = 0; j < Network.Errors.Count; j++)
+                {
+                    errorsAverage[j] += Network.Errors[j];
+                    testerErrorAverage[j] += ((ClassificationGatherer)Network.Gatherer).TestErrors[j];
+                    accuracyAveragesV[j] += ((ClassificationGatherer)Network.Gatherer).AccuracyListV[j];
+                    accuracyAveragesT[j] += ((ClassificationGatherer)Network.Gatherer).AccuracyListT[j];
+                }
+            }
+
+            //Calculate average properties
+            for (int j = 0; j < Network.Errors.Count; j++)
+            {
+                errorsAverage[j] /= iterations;
+                testerErrorAverage[j] /= iterations;
+                accuracyAveragesV[j] /= iterations;
+                accuracyAveragesT[j] /= iterations;
+            }
+
+            IList<DataPoint> points = new List<DataPoint>();
+            IList<DataPoint> pointsTestError = new List<DataPoint>();
+            IList<DataPoint> pointsAccurracyV = new List<DataPoint>();
+            IList<DataPoint> pointsAccuracyT = new List<DataPoint>();
+            for (int i = 0; i < Network.Errors.Count; i++)
+            {
+                points.Add(new DataPoint(i + 1, errorsAverage[i]));
+                pointsTestError.Add(new DataPoint(i + 1, testerErrorAverage[i]));
+                pointsAccuracyT.Add(new DataPoint(i + 1, accuracyAveragesT[i]));
+                pointsAccurracyV.Add(new DataPoint(i + 1, accuracyAveragesV[i]));
+            }
+
+            //calculate error matrix
+            List<Tuple<int, int>> DesiredAndActualOutputs = new List<Tuple<int, int>>();
+            foreach (var telem in testData)
+            {
+
+                var desired = ((ClassificationGatherer)Network.Gatherer).ConvertMatrixToClass(telem.DesiredOutput);
+                var gotten = ((ClassificationGatherer)Network.Gatherer).ConvertMatrixToClass(Network.ForwardPropagation(telem.Input));
+                DesiredAndActualOutputs.Add(new Tuple<int, int>(desired, gotten));
+            }
+
+            int[,] ErrorMatrix = new int[3, 3];
+
+            foreach (var tupel in DesiredAndActualOutputs)
+            {
+                ErrorMatrix[tupel.Item1 - 1, tupel.Item2 - 1]++;
+            }
+
+            WindowDataGrid wdg = new WindowDataGrid(ErrorMatrix);
+            wdg.Show();
+
+
+            SeriesList.Add(new OxyPlot.Wpf.LineSeries
+            {
+                ItemsSource = points,
+                Title = $"Training error Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
+            });
+            SeriesList.Add(new OxyPlot.Wpf.LineSeries
+            {
+                ItemsSource = pointsTestError,
+                Title = $"Validation error Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
+            });
+
+            SeriesList2.Add(new OxyPlot.Wpf.LineSeries
+            {
+                ItemsSource = pointsAccuracyT,
+                Title = $"Training set accuracy Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
+            });
+            SeriesList2.Add(new OxyPlot.Wpf.LineSeries
+            {
+                ItemsSource = pointsAccurracyV,
+                Title = $"Validation set accuracy Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
+            });
         }
 
         private void ApproximationScenario(DataGetter dg, List<TrainingElement> data, TrainingParameters td)
@@ -295,14 +303,14 @@ namespace NeuralNetworkPresentation
                 testPoints.Add(new DataPoint(i + 1, testerErrorAverage[i]));
             }
 
-            SeriesList.Add(new LineSeries
+            SeriesList.Add(new OxyPlot.Wpf.LineSeries
             {
                 ItemsSource = points,
                 Title = $"Training error (Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount})"
             });
 
 
-            SeriesList.Add(new LineSeries
+            SeriesList.Add(new OxyPlot.Wpf.LineSeries
             {
                 ItemsSource = testPoints,
                 Title = $"Validation Error (Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount})"
@@ -340,7 +348,7 @@ namespace NeuralNetworkPresentation
                 points.Add(new DataPoint(i + 1, errorsAverage[i]));
             }
 
-            SeriesList.Add(new LineSeries
+            SeriesList.Add(new OxyPlot.Wpf.LineSeries
             {
                 ItemsSource = points,
                 Title = $"Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
@@ -358,36 +366,54 @@ namespace NeuralNetworkPresentation
             };
 
             DataGetter dg = new DataGetter();
-            List<TrainingElement> training = dg.GetSetOfData(TestPath.Text, Network.InputSize);
-            IList<DataPoint> trainingPoints = new List<DataPoint>();
+            List<TrainingElement> testing = dg.GetSetOfData(TestPath.Text, Network.InputSize);
+            IList<DataPoint> testingPoints = new List<DataPoint>();
+
+            foreach (var train in testing)
+            {
+                var x = train.Input.At(0, 0);
+                var y = train.DesiredOutput.At(0, 0);
+                testingPoints.Add(new DataPoint(x, y));
+            }
+
+            List<TrainingElement> training = dg.GetSetOfData(TrainPath.Text, Network.InputSize);
+            IList<ScatterPoint> trainingPoints = new List<ScatterPoint>();
             foreach (var train in training)
             {
                 var x = train.Input.At(0, 0);
                 var y = train.DesiredOutput.At(0, 0);
-                trainingPoints.Add(new DataPoint(x, y));
+                trainingPoints.Add(new ScatterPoint(x, y, 5));
             }
 
-            trainingPoints = trainingPoints.OrderBy(elem => elem.X).ToList();
+            testingPoints = testingPoints.OrderBy(elem => elem.X).ToList();
+            //trainingPoints = trainingPoints.OrderBy(elem => elem.X).ToList();
 
-            IList<DataPoint> testing = new List<DataPoint>();
+            IList<DataPoint> testingp = new List<DataPoint>();
+            
 
             for (double i = -4; i <= 4; i += 0.1)
             {
                 var losowe = Network.ForwardPropagation(Matrix<double>.Build.DenseOfArray(new double[,] { { i } }));
-                testing.Add(new DataPoint(i, losowe.At(0, 0)));
+                testingp.Add(new DataPoint(i, losowe.At(0, 0)));
             }
 
-            List<LineSeries> serieses = new List<LineSeries>() {
-                new LineSeries
+            List<OxyPlot.Wpf.Series> serieses = new List<OxyPlot.Wpf.Series>() {
+                new OxyPlot.Wpf.LineSeries
+                {
+                    ItemsSource = testingp,
+                    Title = $"Approximation Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
+                },
+                new OxyPlot.Wpf.LineSeries
+                {
+                    ItemsSource = testingPoints,
+                    Title = $"Original function"
+                },
+                new OxyPlot.Wpf.ScatterSeries
                 {
                     ItemsSource = trainingPoints,
-                    Title = $"Original function"
-                 },
-                new LineSeries
-                {
-                    ItemsSource = testing,
-                    Title = $"Approximation function Learning rate: {td.LearningRate}, momentum: {td.Momentum}, hidden neuron count: {Network.Layers[0].NeuronCount}"
-                }
+                    Title = $"Training points",
+                    MarkerSize = 5
+                }                
             };
             GraphWindow gw = new GraphWindow("Functions comparison", "x", "y", serieses);
             gw.Show();

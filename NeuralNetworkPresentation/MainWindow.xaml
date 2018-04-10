@@ -52,5 +52,9 @@
         <Button Content="Accuracy Graph" HorizontalAlignment="Left" Margin="878,183,0,0" VerticalAlignment="Top" Width="104" Height="35" Click="Button_Click_ShowAccuracyGraph"/>
         <TextBlock HorizontalAlignment="Left" Margin="452,285,0,0" TextWrapping="Wrap" Text="Iterations" VerticalAlignment="Top" Width="108" />
         <TextBox x:Name="Iterations" HorizontalAlignment="Left" Height="23" Margin="452,306,0,0" TextWrapping="Wrap" Text="20" VerticalAlignment="Top" Width="98" />
+        <CheckBox x:Name="FirstInput" Content="First input" HorizontalAlignment="Left" Margin="204,28,0,0" VerticalAlignment="Top" IsChecked="True" />
+        <CheckBox x:Name="SecondInput" Content="Second input" HorizontalAlignment="Left" Margin="304,28,0,0" VerticalAlignment="Top" IsChecked="True" />
+        <CheckBox x:Name="ThirdInput" Content="Third input" HorizontalAlignment="Left" Margin="404,28,0,0" VerticalAlignment="Top" IsChecked="True" />
+        <CheckBox x:Name="FourthInput" Content="Fourth input" HorizontalAlignment="Left" Margin="504,28,0,0" VerticalAlignment="Top" IsChecked="True" />
     </Grid>
 </Window>
